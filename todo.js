@@ -1,7 +1,9 @@
-// delete unused code, files
-// Install known dependencies
-// File folder structure
-// Layout
+// delete unused code, files*
+// Install known dependencies - Firebase, Chakra ui, React-router-dom, React-loader-spinner,*
+//
+
+// File folder structure*
+// Layout*
 // Sign up & Login page
 // Authentication set up
 // Set up RTK Query
@@ -13,3 +15,6 @@
 // Refactoring
 // Favicon and logo
 // deployment
+
+// Components - Navbar, Sidebar, Categories column, MovieCard,
+//  Banner,
