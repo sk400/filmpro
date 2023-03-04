@@ -4,10 +4,11 @@
 
 // File folder structure*
 // Layout*
-// Sign up & Login page
-// Authentication set up
-// Set up RTK Query
-// Data fetching from tmdb Api
+// Sign up & Login page*
+// Authentication set up*
+// Set up RTK Query*
+// Data fetching from tmdb Api*
+// md Sidebar*
 // Home page
 // Movie Detail Page
 // Set up cloud firestore
@@ -18,3 +19,5 @@
 
 // Components - Navbar, Sidebar, Categories column, MovieCard,
 //  Banner,
+
+// refactor - sidebar list
