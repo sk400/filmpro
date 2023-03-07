@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
@@ -30,19 +30,21 @@ const MainContainer = ({ onOpen, btnRef }) => {
   const bannerData = movies[0];
 
   return (
-    <Box className="bg-[#191919] h-[93.9vh] overflow-y-auto  ">
+    <Box className="bg-[#191919]  h-[94.1vh] overflow-y-auto ">
       <Navbar onOpen={onOpen} btnRef={btnRef} />
 
-      <Routes>
-        <Route
-          path="/"
-          element={<Movies movies={movies} bannerData={bannerData} />}
-        />
-        <Route
-          path="/movie/:movieId"
-          element={<MovieDetailPage movies={movies} />}
-        />
-      </Routes>
+      <Box className="">
+        <Routes>
+          <Route
+            path="/"
+            element={<Movies movies={movies} bannerData={bannerData} />}
+          />
+          <Route
+            path="/movie/:movieId"
+            element={<MovieDetailPage movies={movies} />}
+          />
+        </Routes>
+      </Box>
     </Box>
   );
 };

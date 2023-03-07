@@ -10,9 +10,11 @@ import {
   Text,
   Icon,
 } from "@chakra-ui/react";
-import { BsPlayFill } from "react-icons/bs";
+
 import { AiFillInfoCircle, AiFillStar } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 const Banner = ({ bannerData }) => {
+  const navigate = useNavigate();
   return (
     <Box className="px-5 mt-5 relative">
       <Image
@@ -34,6 +36,7 @@ const Banner = ({ bannerData }) => {
               cursor: "pointer",
             }}
             className="transition duration-200"
+            onClick={() => navigate(`/movie/${bannerData?.id}`)}
           >
             <TagLeftIcon boxSize="12px" as={AiFillInfoCircle} />
             <TagLabel>More info</TagLabel>

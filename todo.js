@@ -26,3 +26,9 @@
 //  Banner,
 
 // refactor - sidebar list
+
+// movie detailpge
+// video trailer to banner
+// configure firestore
+// adding data
+// profile page

@@ -1,10 +1,16 @@
-import { Avatar, Box, Flex, Spacer, Icon, IconButton } from "@chakra-ui/react";
+import { Avatar, Flex, Spacer, Icon, IconButton } from "@chakra-ui/react";
 import React from "react";
 import Searchbar from "./Searchbar";
 import { FiMenu } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { user } from "../features/user/userSlice";
 
 const Navbar = ({ onOpen, btnRef }) => {
+  const userData = useSelector(user);
+
+  console.log(userData);
+
   return (
     <>
       <Flex
@@ -27,11 +33,11 @@ const Navbar = ({ onOpen, btnRef }) => {
         <Spacer sx={{ display: { md: "none" } }} />
         <Searchbar />
         <Spacer />
-        <Link to={`/user/1`}>
+        <Link to={`/user/${userData?.id}`}>
           <Avatar
             size="md"
-            name="Ryan Florence"
-            src="https://bit.ly/ryan-florence"
+            name={userData?.name}
+            src={userData?.image}
             className="cursor-pointer"
           />
         </Link>

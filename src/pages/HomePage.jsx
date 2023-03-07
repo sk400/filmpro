@@ -1,11 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  CategoriesColumn,
-  Loader,
-  MainContainer,
-  Navbar,
-  Sidebar,
-} from "../components";
+import { MainContainer, Sidebar } from "../components";
 import {
   Box,
   Flex,
@@ -31,8 +25,12 @@ const HomePage = () => {
   // console.log(data);
 
   return (
-    <Flex direction="row" align="center" className=" bg-[#191919]  ">
-      <Box>
+    <Flex
+      direction="row"
+      align="center"
+      className=" bg-[#191919] h-screen overflow-y-hidden "
+    >
+      <Box className="">
         <Sidebar isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
       </Box>
 

@@ -2,17 +2,20 @@ import { Box, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setSearchQuery } from "../features/category/categorySlice";
 
 const Searchbar = () => {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!searchText.includes("porn")) {
       dispatch(setSearchQuery(searchText));
+      // navigate("/");
     }
   };
 
