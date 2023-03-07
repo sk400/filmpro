@@ -9,7 +9,7 @@ import { user } from "../features/user/userSlice";
 const Navbar = ({ onOpen, btnRef }) => {
   const userData = useSelector(user);
 
-  console.log(userData);
+  // console.log(userData);
 
   return (
     <>

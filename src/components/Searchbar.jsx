@@ -12,11 +12,7 @@ const Searchbar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!searchText.includes("porn")) {
-      dispatch(setSearchQuery(searchText));
-      // navigate("/");
-    }
+    dispatch(setSearchQuery(searchText));
   };
 
   return (
