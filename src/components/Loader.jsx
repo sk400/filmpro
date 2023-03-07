@@ -4,7 +4,7 @@ import { Circles } from "react-loader-spinner";
 
 const Loader = () => {
   return (
-    <Center className="h-screen">
+    <Center className="h-screen bg-[#212121]">
       <Circles
         height="80"
         width="80"

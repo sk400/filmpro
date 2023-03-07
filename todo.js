@@ -9,6 +9,11 @@
 // Set up RTK Query*
 // Data fetching from tmdb Api*
 // md Sidebar*
+// bottom bar*
+// add skeleton to movie card loading
+// Banner
+// movies
+// categories column
 // Home page
 // Movie Detail Page
 // Set up cloud firestore
