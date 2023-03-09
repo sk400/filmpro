@@ -7,8 +7,8 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { logIn, user } from "./features/user/userSlice";
-import { auth } from "./firebase";
+import { logIn } from "./features/user/userSlice";
+import { addUser, auth } from "./firebase";
 import { HomePage, LoginPage, SignUpPage } from "./pages";
 
 const App = () => {
@@ -43,6 +43,10 @@ const App = () => {
         };
 
         dispatch(logIn(currentUser));
+
+        let { id, name, email, image } = currentUser;
+
+        addUser(id, name, image, email);
 
         navigate("/");
       } else {

@@ -127,9 +127,9 @@ const Sidebar = ({ isOpen, onClose, btnRef }) => {
           <ListItem
             color={"Home" === activeButton ? "#3DD2CC" : "#666666"}
             className={`flex items-center  pl-5 font-semibold text-xl cursor-pointer 
-           py-2 bg-${"Home" === activeButton ? "[#3DD2CC]" : "[#666666]"} ${
-              "Home" === activeButton ? "border-r-4 border-[#3DD2CC]" : ""
-            }  hover:text-[#3DD2CC] transition duration-200`}
+           py-2  ${
+             "Home" === activeButton ? "border-r-4 border-[#3DD2CC]" : ""
+           }  hover:text-[#3DD2CC] transition duration-200`}
             fontFamily="Poppins"
             onClick={() => {
               setActiveButton("Home");
@@ -151,9 +151,9 @@ const Sidebar = ({ isOpen, onClose, btnRef }) => {
               key={index}
               color={item?.name === activeButton ? "#3DD2CC" : "#666666"}
               className={`flex items-center  pl-5 font-semibold text-xl cursor-pointer 
-           py-2 bg-${item?.name === activeButton ? "[#3DD2CC]" : "[#666666]"} ${
-                item?.name === activeButton ? "border-r-4 border-[#3DD2CC]" : ""
-              }  hover:text-[#3DD2CC] transition duration-200`}
+           py-2  ${
+             item?.name === activeButton ? "border-r-4 border-[#3DD2CC]" : ""
+           }  hover:text-[#3DD2CC] transition duration-200`}
               fontFamily="Poppins"
               onClick={() => {
                 setActiveButton(item?.name);

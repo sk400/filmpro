@@ -15,18 +15,36 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
+import { ref, set } from "firebase/database";
 import React, { useState } from "react";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { Loader } from "../components";
+import { user } from "../features/user/userSlice";
+import { db } from "../firebase";
 import { useGetMovieDetailQuery } from "../services/movieApi";
 
 const MovieDetailPage = () => {
   const [videoKey, setVideoKey] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
+  // const userData = useSelector(user);
+
+  // const showToast = () =>
+  //   toast({
+  //     title: "Added to favorites successfully.",
+  //     status: "success",
+  //     duration: 3000,
+  //     isClosable: true,
+  //     position: "top-right",
+  //   });
 
   const { movieId } = useParams();
 
@@ -74,8 +92,6 @@ const MovieDetailPage = () => {
   };
 
   const videos = getVideos();
-
-  // console.log(videos);
 
   return (
     <Box className="px-5">
@@ -157,6 +173,25 @@ const MovieDetailPage = () => {
             {choosenMovie?.overview}
           </Text>
         </Box>
+
+        <Button
+          leftIcon={<AiOutlinePlus />}
+          bgColor="#191919"
+          color="#3DD2CC"
+          variant="outline"
+          className="mt-5 "
+          sx={{
+            _hover: {
+              backgroundColor: "#191919",
+              opacity: "0.8",
+            },
+          }}
+          // onClick={() => {
+          //   AddToFavorites(choosenMovie);
+          // }}
+        >
+          Add to favorites
+        </Button>
         {/* Directors, actors, release date, website  (problem) */}
         <Box className="mt-10">
           <Text fontSize="md" fontFamily="Poppins" color="white">

@@ -22,13 +22,8 @@
 // Favicon and logo
 // deployment
 
-// Components - Navbar, Sidebar, Categories column, MovieCard,
-//  Banner,
+// adding movies to user data object
 
-// refactor - sidebar list
+// onclick - add to favorites
 
-// movie detailpge
-// video trailer to banner
-// configure firestore
-// adding data
-// profile page
+// render favorite movies on userprofilepage

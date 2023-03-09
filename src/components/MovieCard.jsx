@@ -1,6 +1,6 @@
-import { Box, Image, Icon, Text } from "@chakra-ui/react";
+import { Box, Image, Icon, Text, IconButton } from "@chakra-ui/react";
 import React from "react";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar, AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 // https://image.tmdb.org/t/p/original
@@ -22,7 +22,7 @@ const MovieCard = ({ movie }) => {
           />
           <Box
             className="absolute top-5 right-5 flex items-center space-x-2 bg-white bg-opacity-20
-        py-1 px-2 rounded-lg  z-20
+        py-1 px-2 rounded-lg  
         "
           >
             <Icon as={AiFillStar} color="#FFBF00 " />
