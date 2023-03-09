@@ -41,7 +41,7 @@ const MovieDetailPage = () => {
       </Text>
     );
 
-  // console.log(data);
+  console.log(data);
 
   let choosenMovie = data;
 
@@ -50,7 +50,9 @@ const MovieDetailPage = () => {
       (item) => item?.department === "Directing"
     );
 
-    const directors = directorsData?.map((item) => item?.original_name);
+    const directors = directorsData
+      ?.slice(0, 4)
+      .map((item) => item?.original_name);
 
     return directors;
   };
@@ -76,8 +78,9 @@ const MovieDetailPage = () => {
   // console.log(videos);
 
   return (
-    <Box>
-      <Box className="px-5 mt-5 relative ">
+    <Box className="px-5">
+      {/* Banner */}
+      <Box className=" mt-5 relative ">
         <Image
           src={`https://image.tmdb.org/t/p/original/${choosenMovie?.backdrop_path}`}
           alt={choosenMovie?.title}
@@ -86,7 +89,7 @@ const MovieDetailPage = () => {
         />
         <Box
           className="absolute top-0 right-0 bottom-0 left-0 flex justify-center items-center
-        "
+    "
         >
           <Center>
             <Icon
@@ -103,11 +106,14 @@ const MovieDetailPage = () => {
           </Center>
         </Box>
       </Box>
-      <Box className="px-5 py-10 ">
-        <Box className="space-y-5">
-          <Heading as="h1" size="2xl" color="white">
+      {/* Content */}
+      <Box className="py-10 max-w-3xl">
+        <Box>
+          {/* Heading */}
+          <Heading color="white">
             {choosenMovie?.original_title || choosenMovie?.title}
           </Heading>
+          {/* Tagline */}
           {choosenMovie?.tagline && (
             <Text
               color="white"
@@ -115,8 +121,10 @@ const MovieDetailPage = () => {
               className="my-5"
             >{`"${choosenMovie?.tagline}"`}</Text>
           )}
-          <Box className="flex justify-between items-center max-w-3xl">
-            <HStack gap="2">
+          {/* Genres  */}
+
+          <Box className="space-y-7 sm:space-y-0 sm:flex sm:justify-between sm:items-center ">
+            <HStack gap="3" flexWrap="wrap">
               {choosenMovie?.genres?.map((genre) => (
                 <Tag variant="outline" color="#3DD2CC">
                   {genre?.name}
@@ -124,9 +132,9 @@ const MovieDetailPage = () => {
               ))}
             </HStack>
             <Box
-              className=" flex items-center space-x-2 bg-white bg-opacity-20
-      py-1 px-2 rounded-lg  z-20
-      "
+              className=" flex justify-start items-center space-x-2 bg-white bg-opacity-20
+        py-1 pl-2 rounded-lg  max-w-[70px] sm:w-full
+         "
             >
               <Icon as={AiFillStar} color="#FFBF00 " />
               <Text
@@ -134,24 +142,23 @@ const MovieDetailPage = () => {
                 color="white"
                 className="hover:text-[#3DD2CC]"
               >
-                {choosenMovie?.vote_average}
+                {choosenMovie?.vote_average?.toFixed(1)}
               </Text>
             </Box>
           </Box>
         </Box>
+        {/* overview */}
 
-        <Box className="mt-7">
-          <Heading as="h2" size="xl" color="white" className="space-y-5">
+        <Box className="mt-7 space-y-5">
+          <Heading as="h2" size="xl" color="white" className="">
             Overview
           </Heading>
-          <Text color="white" fontSize="sm" className="max-w-3xl ">
+          <Text color="white" fontSize="sm" className=" ">
             {choosenMovie?.overview}
           </Text>
         </Box>
-
-        {/* <Divider className="my-5 max-w-3xl" /> */}
-
-        <Box className="max-w-3xl mt-10">
+        {/* Directors, actors, release date, website  (problem) */}
+        <Box className="mt-10">
           <Text fontSize="md" fontFamily="Poppins" color="white">
             Directors:
             <span className="text-[#3DD2CC] ml-2">
@@ -192,14 +199,15 @@ const MovieDetailPage = () => {
                 className="mt-5"
               >
                 Website:
-                <span className="text-[#3DD2CC] ml-2">
+                <span className="text-[#3DD2CC] ml-2 ">
                   <a
                     href={choosenMovie?.homepage}
                     style={{ textDecoration: "none", color: "#3DD2CC" }}
                     target="_blank"
                     rel="noreferrer"
+                    className=""
                   >
-                    {choosenMovie?.homepage}
+                    url
                   </a>
                 </span>
               </Text>
@@ -208,7 +216,7 @@ const MovieDetailPage = () => {
           )}
         </Box>
       </Box>
-
+      {/* Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>

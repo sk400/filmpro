@@ -20,11 +20,7 @@ const SignUpPage = () => {
   const createUser = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
-        // console.log(user);
       })
       .catch((error) => {
         console.log(error);
