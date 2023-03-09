@@ -41,7 +41,7 @@ const MovieDetailPage = () => {
       </Text>
     );
 
-  console.log(data);
+  // console.log(data);
 
   let choosenMovie = data;
 

@@ -1,5 +1,9 @@
 import { Box, ChakraProvider } from "@chakra-ui/react";
-import { onAuthStateChanged } from "firebase/auth";
+import {
+  isSignInWithEmailLink,
+  onAuthStateChanged,
+  signInWithEmailLink,
+} from "firebase/auth";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -12,6 +16,21 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let userEmail = window.localStorage.getItem("emailForSignIn");
+      if (!userEmail) {
+        userEmail = window.prompt("Please provide your email for confirmation");
+      }
+
+      signInWithEmailLink(auth, userEmail, window.location.href)
+        .then((result) => {
+          window.localStorage.removeItem("emailForSignIn");
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // console.log(user);

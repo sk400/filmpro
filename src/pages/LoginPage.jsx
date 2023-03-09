@@ -7,29 +7,53 @@ import {
   Image,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { signInWithPopup } from "firebase/auth";
-import React from "react";
+import { sendSignInLinkToEmail, signInWithPopup } from "firebase/auth";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "../firebase";
+import { actionCodeSettings, auth, provider } from "../firebase";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState();
+  const [name, setName] = useState();
+  const toast = useToast();
 
-  const signInUser = () => {
+  const showToast = (title, status) => {
+    return toast({
+      title: title,
+      status: status,
+      isClosable: true,
+      position: "top-right",
+      duration: 4000,
+    });
+  };
+
+  let text = "We Sent a link to your email. Please click the link to signin.";
+
+  const signInUserWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
-        // console.log(user);
+        showToast("Logged in successfully.", "success");
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const createUserWithEmail = () => {
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        window.localStorage.setItem("emailForSignIn", email);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   return (
     <Flex direction="row" className="h-screen ">
       <Box className="lg:basis-[55%] xl:basis-[60%] hidden lg:flex">
@@ -58,19 +82,21 @@ const LoginPage = () => {
             <Flex className="space-y-5" direction="column " justify="center">
               <Input
                 variant="flushed"
+                placeholder="Name"
+                type="text"
+                focusBorderColor="#3DD2CC"
+                fontFamily="Poppins"
+                color="white"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                variant="flushed"
                 placeholder="Email"
                 type="email"
                 focusBorderColor="#3DD2CC"
                 fontFamily="Poppins"
                 color="white"
-              />
-              <Input
-                variant="flushed"
-                placeholder="Password"
-                type="password"
-                focusBorderColor="#3DD2CC"
-                fontFamily="Poppins"
-                color="white"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Flex>
           </Flex>
@@ -80,6 +106,10 @@ const LoginPage = () => {
               size="lg"
               className="w-full bg-white hover:opacity-[0.8] transition duration-200 "
               fontFamily="Poppins"
+              onClick={() => {
+                showToast(text, "success");
+                createUserWithEmail();
+              }}
             >
               Sign in
             </Button>
@@ -90,7 +120,7 @@ const LoginPage = () => {
           hover:border-[#3DD2CC] transition duration-200
           "
               leftIcon={<FcGoogle />}
-              onClick={() => signInUser()}
+              onClick={() => signInUserWithGoogle()}
             >
               Sign in with google
             </Button>
@@ -111,3 +141,5 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+// saumyakantapanda82@gmail.com

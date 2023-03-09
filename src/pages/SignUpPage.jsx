@@ -7,23 +7,55 @@ import {
   Image,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { signInWithPopup } from "firebase/auth";
-import React from "react";
+import {
+  isSignInWithEmailLink,
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  signInWithPopup,
+} from "firebase/auth";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import { auth, provider } from "../firebase";
+import { actionCodeSettings, auth, provider } from "../firebase";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState();
+  const [name, setName] = useState();
+  const toast = useToast();
+
+  let text = "We Sent a link to your email. Please click the link to sign up.";
 
   const createUser = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
+        showToast("Signed up in successfully.", "success");
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const showToast = (title, status) => {
+    return toast({
+      title: title,
+      status: status,
+      isClosable: true,
+      position: "top-right",
+      duration: 4000,
+    });
+  };
+
+  const createUserWithEmail = () => {
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        window.localStorage.setItem("emailForSignIn", email);
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 
@@ -54,6 +86,7 @@ const SignUpPage = () => {
                 focusBorderColor="#3DD2CC"
                 fontFamily="Poppins"
                 color="white"
+                onChange={(e) => setName(e.target.value)}
               />
               <Input
                 variant="flushed"
@@ -62,22 +95,7 @@ const SignUpPage = () => {
                 focusBorderColor="#3DD2CC"
                 fontFamily="Poppins"
                 color="white"
-              />
-              <Input
-                variant="flushed"
-                placeholder="Password"
-                type="password"
-                focusBorderColor="#3DD2CC"
-                fontFamily="Poppins"
-                color="white"
-              />
-              <Input
-                variant="flushed"
-                placeholder="confirm password"
-                type="password"
-                focusBorderColor="#3DD2CC"
-                fontFamily="Poppins"
-                color="white"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Flex>
           </Flex>
@@ -87,6 +105,10 @@ const SignUpPage = () => {
               size="lg"
               className="w-full bg-white hover:opacity-[0.8] transition duration-200 "
               fontFamily="Poppins"
+              onClick={() => {
+                createUserWithEmail();
+                showToast(text, "success");
+              }}
             >
               Create account
             </Button>
