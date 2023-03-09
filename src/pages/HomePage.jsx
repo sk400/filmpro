@@ -22,8 +22,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log(data);
-
   return (
     <Flex
       direction="row"

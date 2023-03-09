@@ -208,7 +208,7 @@ const Sidebar = ({ isOpen, onClose, btnRef }) => {
             ))}
           </List>
         </Box>
-        <Center className="h-[50px] absolute bottom-0  w-full">
+        <Center className="h-[50px] absolute bottom-4 right-4  ">
           <Button
             leftIcon={<Icon as={FiLogOut} />}
             colorScheme="#212121"
