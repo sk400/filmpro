@@ -61,16 +61,15 @@ const Sidebar = ({ isOpen, onClose, btnRef }) => {
               </Heading>
             </Center>
           </DrawerHeader>
-
+          <Text
+            fontSize="sm"
+            fontFamily="Poppins"
+            color="white"
+            className="pl-5 my-3"
+          >
+            Categories
+          </Text>
           <DrawerBody>
-            <Text
-              fontSize="sm"
-              fontFamily="Poppins"
-              color="white"
-              className="pl-2 my-3"
-            >
-              Categories
-            </Text>
             <List spacing={2}>
               {sidebarGenres?.map((item) => (
                 <ListItem
