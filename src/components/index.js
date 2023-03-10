@@ -6,3 +6,5 @@ export { default as Banner } from "./Banner";
 export { default as Loader } from "./Loader";
 export { default as MainContainer } from "./MainContainer";
 export { default as Searchbar } from "./Searchbar";
+export { default as FavoriteMovies } from "./FavoriteMovies";
+export { default as FavoriteMovieCard } from "./FavoriteMovieCard";

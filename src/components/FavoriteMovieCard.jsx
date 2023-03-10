@@ -3,21 +3,19 @@ import React from "react";
 import { AiFillStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-// https://image.tmdb.org/t/p/original
-
-const MovieCard = ({ movie }) => {
+const FavoriteMovieCard = ({ movie }) => {
   const navigate = useNavigate();
   // console.log(movie);
   return (
     <Box>
-      {movie?.poster_path && (
+      {movie?.image && (
         <Box
           className="hover:scale-105 transition duration-200 cursor-pointer relative"
-          onClick={() => navigate(`/movie/${movie?.id}`)}
+          onClick={() => navigate(`/movie/${Number(movie?.id)}`)}
         >
           <Image
-            src={`https://image.tmdb.org/t/p/original/${movie?.poster_path}`}
-            alt={movie?.title}
+            src={`https://image.tmdb.org/t/p/original/${movie?.image}`}
+            alt={movie?.name}
             borderRadius="lg"
           />
           <Box
@@ -27,7 +25,7 @@ const MovieCard = ({ movie }) => {
           >
             <Icon as={AiFillStar} color="#FFBF00 " />
             <Text fontSize="xs" color="white" className="hover:text-[#3DD2CC]">
-              {movie?.vote_average}
+              {movie?.ratings}
             </Text>
           </Box>
         </Box>
@@ -36,4 +34,4 @@ const MovieCard = ({ movie }) => {
   );
 };
 
-export default MovieCard;
+export default FavoriteMovieCard;

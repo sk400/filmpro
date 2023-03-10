@@ -19,34 +19,60 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ref, set } from "firebase/database";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
+import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { Loader } from "../components";
 import { user } from "../features/user/userSlice";
-import { db } from "../firebase";
+import {
+  addMovieToFavorites,
+  db,
+  getFavoriteMovies,
+  removeFromFavorites,
+} from "../firebase";
 import { useGetMovieDetailQuery } from "../services/movieApi";
 
 const MovieDetailPage = () => {
   const [videoKey, setVideoKey] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isAlreadyInFavorites, setIsAlreadyInFavorites] = useState(false);
   const toast = useToast();
+  const { movieId } = useParams();
 
-  // const userData = useSelector(user);
+  let id = movieId?.toString();
 
-  // const showToast = () =>
+  const userData = useSelector(user);
+
+  let userId = userData?.id;
+
+  const getMoviesData = async () => {
+    const movies = await getFavoriteMovies(userId);
+
+    const movie = movies?.find((movie) => movie?.id === id);
+
+    if (movie) {
+      setIsAlreadyInFavorites(true);
+    } else {
+      setIsAlreadyInFavorites(false);
+    }
+  };
+
+  useEffect(() => {
+    getMoviesData();
+  }, []);
+
+  // const showToast = (title) =>
   //   toast({
-  //     title: "Added to favorites successfully.",
+  //     title: title,
   //     status: "success",
   //     duration: 3000,
   //     isClosable: true,
   //     position: "top-right",
   //   });
-
-  const { movieId } = useParams();
 
   const { data, isFetching, error } = useGetMovieDetailQuery({ movieId });
 
@@ -90,6 +116,15 @@ const MovieDetailPage = () => {
     const videos = choosenMovie?.videos?.results?.map((item) => item?.key);
     return videos;
   };
+
+  // const addToFavorites = () => {
+  //   let movieImage = choosenMovie?.poster_path;
+  //   let ratings = choosenMovie?.vote_average?.toFixed(1);
+
+  //   let movieName = choosenMovie?.original_title || choosenMovie?.title;
+  //   addMovieToFavorites(id, movieImage, ratings, userId, movieName);
+  //   showToast("Added to favorites successfully.");
+  // };
 
   const videos = getVideos();
 
@@ -174,24 +209,49 @@ const MovieDetailPage = () => {
           </Text>
         </Box>
 
-        <Button
-          leftIcon={<AiOutlinePlus />}
-          bgColor="#191919"
-          color="#3DD2CC"
-          variant="outline"
-          className="mt-5 "
-          sx={{
-            _hover: {
-              backgroundColor: "#191919",
-              opacity: "0.8",
-            },
-          }}
-          // onClick={() => {
-          //   AddToFavorites(choosenMovie);
-          // }}
-        >
-          Add to favorites
-        </Button>
+        {/* {isAlreadyInFavorites ? (
+          <Button
+            leftIcon={<IoMdRemoveCircleOutline />}
+            bgColor="#191919"
+            color="#3DD2CC"
+            variant="outline"
+            className="mt-5 "
+            sx={{
+              _hover: {
+                backgroundColor: "#191919",
+                opacity: "0.8",
+              },
+            }}
+            onClick={() => {
+              removeFromFavorites(id);
+              showToast("Successfully removed from favorites.");
+              getMoviesData();
+            }}
+          >
+            remove from favorites
+          </Button>
+        ) : (
+          <Button
+            leftIcon={<AiOutlinePlus />}
+            bgColor="#191919"
+            color="#3DD2CC"
+            variant="outline"
+            className="mt-5 "
+            sx={{
+              _hover: {
+                backgroundColor: "#191919",
+                opacity: "0.8",
+              },
+            }}
+            onClick={() => {
+              addToFavorites();
+              getMoviesData();
+            }}
+          >
+            Add to favorites
+          </Button>
+        )} */}
+
         {/* Directors, actors, release date, website  (problem) */}
         <Box className="mt-10">
           <Text fontSize="md" fontFamily="Poppins" color="white">

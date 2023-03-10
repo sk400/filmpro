@@ -44,7 +44,7 @@ export const addUser = async (id, name, image, email) => {
       email: email,
       userId: id,
     });
-    console.log("Document created successfully.");
+    console.log("User info added successfully.");
   } catch (error) {
     console.log(error);
   }
@@ -56,7 +56,6 @@ export const getUserInfo = async (id) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    // userInfo = docSnap.data();
     userInfo = docSnap.data();
   } else {
     console.log("No such document.");
@@ -65,24 +64,46 @@ export const getUserInfo = async (id) => {
   return userInfo;
 };
 
-// export const getData = async () => {
-//   let favoriteMovies = [];
-//   const querySnapshot = await getDocs(collection(db, "movies"));
-//   querySnapshot?.forEach((doc) => {
-//     favoriteMovies.push(doc.data());
-//   });
+export const addMovieToFavorites = async (
+  movieId,
+  movieImage,
+  ratings,
+  userId,
+  movieName
+) => {
+  try {
+    await setDoc(doc(db, "favoriteMovies", movieId), {
+      id: movieId,
+      name: movieName,
+      image: ` https://image.tmdb.org/t/p/original/${movieImage}`,
+      ratings: ratings,
+      userId: userId,
+    });
+    console.log("Successfully added to favorites.");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-//   const selectedMovies = favoriteMovies.filter(
-//     (movie) => movie?.userId === "10"
-//   );
+export const getFavoriteMovies = async (userId) => {
+  let favoriteMovies = [];
+  const querySnapshot = await getDocs(collection(db, "favoriteMovies"));
+  querySnapshot?.forEach((doc) => {
+    favoriteMovies.push(doc.data());
+  });
 
-//   console.log(selectedMovies);
-// };
+  const selectedMovies = favoriteMovies.filter(
+    (movie) => movie?.userId === userId
+  );
 
-// getData();
+  return selectedMovies;
+};
 
-// const deleteData = async () => {
-//   await deleteDoc(doc(db, "movies", "1"));
-// };
-
-// deleteData();
+export const removeFromFavorites = async (movieId) => {
+  try {
+    await deleteDoc(doc(db, "favoriteMovies", movieId));
+    console.log("Successfully removed from favorites.");
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -37,7 +37,9 @@ const MainContainer = ({ onOpen, btnRef }) => {
         <Routes>
           <Route
             path="/"
-            element={<Movies movies={movies} bannerData={bannerData} />}
+            element={
+              <Movies movies={movies} bannerData={bannerData} notFavorites />
+            }
           />
           <Route
             path="/movie/:movieId"
