@@ -17,15 +17,16 @@ import {
   ModalBody,
   Button,
   useToast,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { ref, set } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../components";
 import { user } from "../features/user/userSlice";
 import {
@@ -35,12 +36,16 @@ import {
   removeFromFavorites,
 } from "../firebase";
 import { useGetMovieDetailQuery } from "../services/movieApi";
+import { setCategory } from "../features/category/categorySlice";
 
 const MovieDetailPage = () => {
   const [videoKey, setVideoKey] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isAlreadyInFavorites, setIsAlreadyInFavorites] = useState(false);
-  const toast = useToast();
+  // const [isAlreadyInFavorites, setIsAlreadyInFavorites] = useState(false);
+  // const toast = useToast();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { movieId } = useParams();
 
   let id = movieId?.toString();
@@ -49,21 +54,21 @@ const MovieDetailPage = () => {
 
   let userId = userData?.id;
 
-  const getMoviesData = async () => {
-    const movies = await getFavoriteMovies(userId);
+  // const getMoviesData = async () => {
+  //   const movies = await getFavoriteMovies(userId);
 
-    const movie = movies?.find((movie) => movie?.id === id);
+  //   const movie = movies?.find((movie) => movie?.id === id);
 
-    if (movie) {
-      setIsAlreadyInFavorites(true);
-    } else {
-      setIsAlreadyInFavorites(false);
-    }
-  };
+  //   if (movie) {
+  //     setIsAlreadyInFavorites(true);
+  //   } else {
+  //     setIsAlreadyInFavorites(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    getMoviesData();
-  }, []);
+  // useEffect(() => {
+  //   getMoviesData();
+  // }, []);
 
   // const showToast = (title) =>
   //   toast({
@@ -103,14 +108,14 @@ const MovieDetailPage = () => {
 
   const directors = getMovieDirectors();
 
-  const getMovieActors = () => {
-    const actors = choosenMovie?.credits?.cast
-      ?.slice(0, 4)
-      .map((item) => item?.original_name);
-    return actors;
-  };
+  // const getMovieActors = () => {
+  //   const actors = choosenMovie?.credits?.cast
+  //     ?.slice(0, 4)
+  //     .map((item) => item?.original_name);
+  //   return actors;
+  // };
 
-  const actors = getMovieActors();
+  const actors = choosenMovie?.credits?.cast;
 
   const getVideos = () => {
     const videos = choosenMovie?.videos?.results?.map((item) => item?.key);
@@ -127,7 +132,6 @@ const MovieDetailPage = () => {
   // };
 
   const videos = getVideos();
-
   return (
     <Box className="px-5">
       {/* Banner */}
@@ -177,7 +181,18 @@ const MovieDetailPage = () => {
           <Box className="space-y-7 sm:space-y-0 sm:flex sm:justify-between sm:items-center ">
             <HStack gap="3" flexWrap="wrap">
               {choosenMovie?.genres?.map((genre) => (
-                <Tag variant="outline" color="#3DD2CC">
+                <Tag
+                  variant="outline"
+                  color="#3DD2CC"
+                  key={genre?.id}
+                  onClick={() => {
+                    dispatch(setCategory(genre?.id));
+                    navigate("/");
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                >
                   {genre?.name}
                 </Tag>
               ))}
@@ -252,8 +267,9 @@ const MovieDetailPage = () => {
           </Button>
         )} */}
 
-        {/* Directors, actors, release date, website  (problem) */}
+        {/* Directors, release date, website */}
         <Box className="mt-10">
+          {/* Directors */}
           <Text fontSize="md" fontFamily="Poppins" color="white">
             Directors:
             <span className="text-[#3DD2CC] ml-2">
@@ -261,7 +277,8 @@ const MovieDetailPage = () => {
             </span>
           </Text>
           <Divider className="my-1" />
-          <Text
+
+          {/* <Text
             fontSize="md"
             fontFamily="Poppins"
             color="white"
@@ -272,7 +289,8 @@ const MovieDetailPage = () => {
               {actors?.map((actor) => `${actor}${" "},`)}
             </span>
           </Text>
-          <Divider className="my-1" />
+          <Divider className="my-1" /> */}
+          {/* Release date */}
           <Text
             fontSize="md"
             fontFamily="Poppins"
@@ -285,6 +303,7 @@ const MovieDetailPage = () => {
             </span>
           </Text>
           <Divider className="my-1" />
+          {/* Website homepage */}
           {choosenMovie?.homepage && (
             <>
               <Text
@@ -310,6 +329,56 @@ const MovieDetailPage = () => {
             </>
           )}
         </Box>
+        {/* Actors row */}
+        <Heading
+          as="h2"
+          size="xl"
+          color="white"
+          sx={{
+            mt: 20,
+            mb: 10,
+          }}
+        >
+          Top cast
+        </Heading>
+        <SimpleGrid
+          minChildWidth="120px"
+          spacing="40px"
+          sx={{
+            alignItems: "center",
+            justifyItems: "center",
+          }}
+        >
+          {actors.map((actor) => (
+            <>
+              {actor?.profile_path && (
+                <Link to={`/actor/${actor?.id}`}>
+                  <Box
+                    key={actor?.id}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image
+                      boxSize="100px"
+                      objectFit="cover"
+                      src={`https://image.tmdb.org/t/p/original/${actor?.profile_path}`}
+                      alt={actor?.name}
+                      borderRadius="md"
+                    />
+
+                    <Text color="whiteAlpha.900" mt={2}>
+                      {actor?.name}
+                    </Text>
+                  </Box>
+                </Link>
+              )}
+            </>
+          ))}
+        </SimpleGrid>
       </Box>
       {/* Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">

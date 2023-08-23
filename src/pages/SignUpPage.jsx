@@ -9,12 +9,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import {
-  isSignInWithEmailLink,
-  sendSignInLinkToEmail,
-  signInWithEmailLink,
-  signInWithPopup,
-} from "firebase/auth";
+import { sendSignInLinkToEmail, signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";

@@ -7,7 +7,7 @@ import MovieCard from "./MovieCard";
 const Movies = ({ movies, bannerData }) => {
   return (
     <Box>
-      <Banner bannerData={bannerData} />
+      {bannerData && <Banner bannerData={bannerData} />}
       <Heading as="h1" fontSize="3xl" color="white" className="pl-5 pt-5">
         Movies
       </Heading>

@@ -1,0 +1,21 @@
+New features = Actors images in movie detail page, Actor details page (bio)
+
+Personalisation features - watchlist, favorite movies, favorite actors, 
+
+
+//social media integration
+
+
+
+
+
+
+fetch actor details
+actor details page
+favorites and remove from favorites (movies, actors)
+add to watch list and remove from watch list
+User profile page - favorites (actors/movies), watchlist
+
+
+pagination
+

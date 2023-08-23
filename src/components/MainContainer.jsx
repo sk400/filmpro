@@ -5,7 +5,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { category, searchQuery } from "../features/category/categorySlice";
-import { MovieDetailPage } from "../pages";
+import { ActorDetailPage, MovieDetailPage } from "../pages";
 import { useGetAllMoviesQuery } from "../services/movieApi";
 
 import Loader from "./Loader";
@@ -37,14 +37,10 @@ const MainContainer = ({ onOpen, btnRef }) => {
         <Routes>
           <Route
             path="/"
-            element={
-              <Movies movies={movies} bannerData={bannerData} notFavorites />
-            }
+            element={<Movies movies={movies} bannerData={bannerData} />}
           />
-          <Route
-            path="/movie/:movieId"
-            element={<MovieDetailPage movies={movies} />}
-          />
+          <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+          <Route path="/actor/:actorId" element={<ActorDetailPage />} />
         </Routes>
       </Box>
     </Box>

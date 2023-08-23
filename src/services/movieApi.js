@@ -15,6 +15,7 @@ export const movieApi = createApi({
   reducerPath: "movieApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.themoviedb.org/3" }),
   endpoints: (builder) => ({
+    // All movies
     getAllMovies: builder.query({
       query: ({ categoryName, searchTerm }) => {
         // get movies by category
@@ -37,11 +38,30 @@ export const movieApi = createApi({
         return `/movie/popular?api_key=${api_key}`;
       },
     }),
+
+    // Movie details
     getMovieDetail: builder.query({
       query: ({ movieId }) =>
         `/movie/${movieId}?api_key=${api_key}&append_to_response=videos,credits`,
     }),
+
+    // Movies of an actor
+
+    getMoviesByActor: builder.query({
+      query: ({ id }) => `/discover/movie?api_key=${api_key}&with_cast=${id}`,
+    }),
+
+    // Actor details
+
+    getActorDetails: builder.query({
+      query: ({ actorId }) => `/person/${actorId}?api_key=${api_key}`,
+    }),
   }),
 });
 
-export const { useGetAllMoviesQuery, useGetMovieDetailQuery } = movieApi;
+export const {
+  useGetAllMoviesQuery,
+  useGetMovieDetailQuery,
+  useGetActorDetailsQuery,
+  useGetMoviesByActorQuery,
+} = movieApi;
