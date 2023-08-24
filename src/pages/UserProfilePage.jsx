@@ -1,30 +1,40 @@
 import { Avatar, Box, Center, Heading, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FavoriteMovies, Loader, Movies } from "../components";
-import { getFavoriteMovies, getUserInfo } from "../firebase";
+
+import { getFavoriteMovies, getWatchlist } from "../firebase";
+import { useSelector } from "react-redux";
+import { user } from "../features/user/userSlice";
+import { UserChosenMovies } from "../components";
 
 const UserProfilePage = () => {
-  const { userId } = useParams();
-  const [userData, setUserData] = useState();
+  const [watchlist, setWatchlist] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
 
-  const getUserData = async () => {
-    const userInfo = await getUserInfo(userId);
-    setUserData(userInfo);
-  };
-
-  // const getMoviesData = async () => {
-  //   const movies = await getFavoriteMovies(userId);
-  //   setFavoriteMovies(movies);
-  // };
+  const userData = useSelector(user);
 
   useEffect(() => {
-    getUserData();
-    // getMoviesData();
-  }, []);
+    const getUserFavoriteMovies = async () => {
+      try {
+        const data = await getFavoriteMovies(userData?.email);
+        setFavoriteMovies(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  // console.log(favoriteMovies);
+    const getUserChosenMovies = async () => {
+      try {
+        const data = await getWatchlist(userData?.email);
+        setWatchlist(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserFavoriteMovies();
+    getUserChosenMovies();
+  }, [userData?.email]);
 
   return (
     <Box className="h-screen bg-[#191919] overflow-y-auto ">
@@ -40,21 +50,7 @@ const UserProfilePage = () => {
           <Heading color="white">{userData?.name}</Heading>
         </VStack>
       </Center>
-      {/* <Box className="py-24 px-5 max-w-4xl mx-auto ">
-        {favoriteMovies?.length < 1 ? (
-          <Heading as="h1" fontSize="3xl" color="white" className="pl-5 pt-5">
-            You have no favorite movies.
-          </Heading>
-        ) : (
-          <FavoriteMovies movies={favoriteMovies} />
-        )}
-
-        {favoriteMovies?.length === 0 && (
-          <Heading as="h1" fontSize="3xl" color="white" className="pl-5 pt-5">
-            You have no favorite movies.
-          </Heading>
-        )}
-      </Box> */}
+      <UserChosenMovies favoriteMovies={favoriteMovies} watchlist={watchlist} />
     </Box>
   );
 };

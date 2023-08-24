@@ -33,8 +33,6 @@ const App = () => {
     }
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // console.log(user);
-
         const currentUser = {
           name: user?.displayName,
           email: user?.email,
@@ -45,8 +43,6 @@ const App = () => {
         dispatch(logIn(currentUser));
 
         let { id, name, email, image } = currentUser;
-
-        addUser(id, name, image, email);
 
         navigate("/");
       } else {

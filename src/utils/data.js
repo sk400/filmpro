@@ -1,5 +1,6 @@
 import { AiOutlineStar } from "react-icons/ai";
 import { GoCalendar } from "react-icons/go";
+import { getFavoriteMovies, getWatchlist } from "../firebase";
 
 export const sidebarListItems = [
   {
@@ -35,3 +36,30 @@ export const sidebarGenres = [
   { name: "War", id: 10752 },
   { name: "Western", id: 37 },
 ];
+
+export const extractMovieData = (choosenMovie) => {
+  const getMovieDirectors = () => {
+    const directorsData = choosenMovie?.credits?.crew?.filter(
+      (item) => item?.department === "Directing"
+    );
+
+    const directors = directorsData
+      ?.slice(0, 4)
+      .map((item) => item?.original_name);
+
+    return directors;
+  };
+
+  const directors = getMovieDirectors();
+
+  const actors = choosenMovie?.credits?.cast;
+
+  const getVideos = () => {
+    const videos = choosenMovie?.videos?.results?.map((item) => item?.key);
+    return videos;
+  };
+
+  const videos = getVideos();
+
+  return [directors, actors, videos];
+};

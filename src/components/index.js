@@ -8,3 +8,4 @@ export { default as MainContainer } from "./MainContainer";
 export { default as Searchbar } from "./Searchbar";
 export { default as FavoriteMovies } from "./FavoriteMovies";
 export { default as FavoriteMovieCard } from "./FavoriteMovieCard";
+export { default as UserChosenMovies } from "./UserChosenMovies";

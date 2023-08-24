@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
-  // console.log(movie);
+
   return (
     <Box>
       {movie?.poster_path && (

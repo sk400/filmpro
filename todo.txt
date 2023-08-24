@@ -7,11 +7,13 @@ Personalisation features - watchlist, favorite movies, favorite actors,
 
 
 
+Bug - add to favorites is not working in case of navigating from userProfile page's favorites tab, 
+
+=> favorites and watchlist checker
+=> Duplicate key error
 
 
 
-fetch actor details
-actor details page
 favorites and remove from favorites (movies, actors)
 add to watch list and remove from watch list
 User profile page - favorites (actors/movies), watchlist

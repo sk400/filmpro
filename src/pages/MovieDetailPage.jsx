@@ -19,30 +19,29 @@ import {
   useToast,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { ref, set } from "firebase/database";
-import React, { useEffect, useState, useMemo } from "react";
+
+import React, { useState } from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../components";
 import { user } from "../features/user/userSlice";
-import {
-  addMovieToFavorites,
-  db,
-  getFavoriteMovies,
-  removeFromFavorites,
-} from "../firebase";
+import { addMovieToFavorites, addMovieToWatchlist } from "../firebase";
 import { useGetMovieDetailQuery } from "../services/movieApi";
 import { setCategory } from "../features/category/categorySlice";
+import { useGetFavorites } from "../utils/hooks/useGetFavorites";
+import { extractMovieData } from "../utils/data";
+import { useGetWatchlist } from "../utils/hooks/useGetWatchlist";
 
 const MovieDetailPage = () => {
   const [videoKey, setVideoKey] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [isAlreadyInFavorites, setIsAlreadyInFavorites] = useState(false);
-  // const toast = useToast();
+
+  const toast = useToast();
+  const userData = useSelector(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,34 +49,25 @@ const MovieDetailPage = () => {
 
   let id = movieId?.toString();
 
-  const userData = useSelector(user);
+  let userId = userData?.email;
 
-  let userId = userData?.id;
+  const [isAlreadyInFavorites, setIsAlreadyInFavorites, getFavoriteMoviesData] =
+    useGetFavorites(userId, id);
 
-  // const getMoviesData = async () => {
-  //   const movies = await getFavoriteMovies(userId);
+  const [
+    isAlreadyInWatchlist,
+    setIsAlreadyInWatchlist,
+    getWatchlistMoviesData,
+  ] = useGetWatchlist(userId, id);
 
-  //   const movie = movies?.find((movie) => movie?.id === id);
-
-  //   if (movie) {
-  //     setIsAlreadyInFavorites(true);
-  //   } else {
-  //     setIsAlreadyInFavorites(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getMoviesData();
-  // }, []);
-
-  // const showToast = (title) =>
-  //   toast({
-  //     title: title,
-  //     status: "success",
-  //     duration: 3000,
-  //     isClosable: true,
-  //     position: "top-right",
-  //   });
+  const showToast = (title) =>
+    toast({
+      title: title,
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      position: "top-right",
+    });
 
   const { data, isFetching, error } = useGetMovieDetailQuery({ movieId });
 
@@ -90,48 +80,28 @@ const MovieDetailPage = () => {
       </Text>
     );
 
-  // console.log(data);
-
   let choosenMovie = data;
 
-  const getMovieDirectors = () => {
-    const directorsData = choosenMovie?.credits?.crew?.filter(
-      (item) => item?.department === "Directing"
-    );
+  const [directors, actors, videos] = extractMovieData(choosenMovie);
 
-    const directors = directorsData
-      ?.slice(0, 4)
-      .map((item) => item?.original_name);
+  const addToFavorites = () => {
+    let movieImage = choosenMovie?.poster_path;
+    let ratings = choosenMovie?.vote_average?.toFixed(1);
 
-    return directors;
+    let movieName = choosenMovie?.original_title || choosenMovie?.title;
+    addMovieToFavorites(id, movieImage, ratings, userId, movieName);
+    showToast("Added to favorites successfully.");
   };
 
-  const directors = getMovieDirectors();
+  const addToWatchlist = () => {
+    let movieImage = choosenMovie?.poster_path;
+    let ratings = choosenMovie?.vote_average?.toFixed(1);
 
-  // const getMovieActors = () => {
-  //   const actors = choosenMovie?.credits?.cast
-  //     ?.slice(0, 4)
-  //     .map((item) => item?.original_name);
-  //   return actors;
-  // };
-
-  const actors = choosenMovie?.credits?.cast;
-
-  const getVideos = () => {
-    const videos = choosenMovie?.videos?.results?.map((item) => item?.key);
-    return videos;
+    let movieName = choosenMovie?.original_title || choosenMovie?.title;
+    addMovieToWatchlist(movieId, movieImage, ratings, userId, movieName);
+    showToast("Added to watchlist successfully.");
   };
 
-  // const addToFavorites = () => {
-  //   let movieImage = choosenMovie?.poster_path;
-  //   let ratings = choosenMovie?.vote_average?.toFixed(1);
-
-  //   let movieName = choosenMovie?.original_title || choosenMovie?.title;
-  //   addMovieToFavorites(id, movieImage, ratings, userId, movieName);
-  //   showToast("Added to favorites successfully.");
-  // };
-
-  const videos = getVideos();
   return (
     <Box className="px-5">
       {/* Banner */}
@@ -224,49 +194,6 @@ const MovieDetailPage = () => {
           </Text>
         </Box>
 
-        {/* {isAlreadyInFavorites ? (
-          <Button
-            leftIcon={<IoMdRemoveCircleOutline />}
-            bgColor="#191919"
-            color="#3DD2CC"
-            variant="outline"
-            className="mt-5 "
-            sx={{
-              _hover: {
-                backgroundColor: "#191919",
-                opacity: "0.8",
-              },
-            }}
-            onClick={() => {
-              removeFromFavorites(id);
-              showToast("Successfully removed from favorites.");
-              getMoviesData();
-            }}
-          >
-            remove from favorites
-          </Button>
-        ) : (
-          <Button
-            leftIcon={<AiOutlinePlus />}
-            bgColor="#191919"
-            color="#3DD2CC"
-            variant="outline"
-            className="mt-5 "
-            sx={{
-              _hover: {
-                backgroundColor: "#191919",
-                opacity: "0.8",
-              },
-            }}
-            onClick={() => {
-              addToFavorites();
-              getMoviesData();
-            }}
-          >
-            Add to favorites
-          </Button>
-        )} */}
-
         {/* Directors, release date, website */}
         <Box className="mt-10">
           {/* Directors */}
@@ -277,19 +204,6 @@ const MovieDetailPage = () => {
             </span>
           </Text>
           <Divider className="my-1" />
-
-          {/* <Text
-            fontSize="md"
-            fontFamily="Poppins"
-            color="white"
-            className="mt-5"
-          >
-            Actors:{" "}
-            <span className="text-[#3DD2CC] ml-2">
-              {actors?.map((actor) => `${actor}${" "},`)}
-            </span>
-          </Text>
-          <Divider className="my-1" /> */}
           {/* Release date */}
           <Text
             fontSize="md"
@@ -329,6 +243,55 @@ const MovieDetailPage = () => {
             </>
           )}
         </Box>
+        {/* Add to favorites button  */}
+
+        {!isAlreadyInFavorites && (
+          <Button
+            leftIcon={<AiOutlinePlus />}
+            bgColor="#191919"
+            color="#3DD2CC"
+            variant="outline"
+            className="mt-5 "
+            sx={{
+              _hover: {
+                backgroundColor: "#191919",
+                opacity: "0.8",
+              },
+            }}
+            onClick={() => {
+              addToFavorites();
+              setIsAlreadyInFavorites(true);
+              getFavoriteMoviesData();
+            }}
+          >
+            Add to favorites
+          </Button>
+        )}
+
+        {/* Add to watchlist button */}
+
+        {!isAlreadyInWatchlist && (
+          <Button
+            bgColor="#191919"
+            color="#3DD2CC"
+            variant="outline"
+            className="mt-5 "
+            sx={{
+              _hover: {
+                backgroundColor: "#191919",
+                opacity: "0.8",
+              },
+            }}
+            onClick={() => {
+              addToWatchlist();
+              setIsAlreadyInWatchlist(true);
+              getWatchlistMoviesData();
+            }}
+          >
+            Add to watchlist
+          </Button>
+        )}
+
         {/* Actors row */}
         <Heading
           as="h2"

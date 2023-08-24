@@ -9,9 +9,11 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
-  doc,
   setDoc,
+  doc,
   getDoc,
+  query,
+  onSnapshot,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -36,33 +38,7 @@ export const actionCodeSettings = {
   handleCodeInApp: true,
 };
 
-export const addUser = async (id, name, image, email) => {
-  try {
-    await setDoc(doc(db, "users", id), {
-      name: name,
-      image: image,
-      email: email,
-      userId: id,
-    });
-    console.log("User info added successfully.");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getUserInfo = async (id) => {
-  let userInfo;
-  const docRef = doc(db, "users", id);
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-    userInfo = docSnap.data();
-  } else {
-    console.log("No such document.");
-  }
-
-  return userInfo;
-};
+// Add to favorite movies
 
 export const addMovieToFavorites = async (
   movieId,
@@ -72,38 +48,77 @@ export const addMovieToFavorites = async (
   movieName
 ) => {
   try {
-    await setDoc(doc(db, "favoriteMovies", movieId), {
+    await addDoc(collection(db, "users", userId, "favoriteMovies"), {
       id: movieId,
       name: movieName,
       image: ` https://image.tmdb.org/t/p/original/${movieImage}`,
       ratings: ratings,
-      userId: userId,
     });
+
     console.log("Successfully added to favorites.");
   } catch (error) {
     console.log(error);
   }
 };
 
+// Fetch favorite movies
+
 export const getFavoriteMovies = async (userId) => {
   let favoriteMovies = [];
-  const querySnapshot = await getDocs(collection(db, "favoriteMovies"));
+  const querySnapshot = await getDocs(
+    collection(db, "users", userId, "favoriteMovies")
+  );
   querySnapshot?.forEach((doc) => {
     favoriteMovies.push(doc.data());
   });
 
-  const selectedMovies = favoriteMovies.filter(
-    (movie) => movie?.userId === userId
-  );
-
-  return selectedMovies;
+  return favoriteMovies;
 };
 
-export const removeFromFavorites = async (movieId) => {
+// Add to watchlist
+
+export const addMovieToWatchlist = async (
+  movieId,
+  movieImage,
+  ratings,
+  userId,
+  movieName
+) => {
   try {
-    await deleteDoc(doc(db, "favoriteMovies", movieId));
-    console.log("Successfully removed from favorites.");
+    await addDoc(collection(db, "users", userId, "watchlist"), {
+      id: movieId,
+      name: movieName,
+      image: ` https://image.tmdb.org/t/p/original/${movieImage}`,
+      ratings: ratings,
+    });
+
+    console.log("Successfully added to wtchlist.");
   } catch (error) {
     console.log(error);
   }
 };
+
+// Fetch watchlist
+
+export const getWatchlist = async (userId) => {
+  let watchlist = [];
+  const querySnapshot = await getDocs(
+    collection(db, "users", userId, "watchlist")
+  );
+  querySnapshot?.forEach((doc) => {
+    watchlist.push(doc.data());
+  });
+
+  return watchlist;
+};
+
+// Remove from watchlist
+
+// export const removeFromWatchlist = async (userId, movieId) => {
+//   try {
+//     await deleteDoc(doc(db, "users", userId, "watchlist", movieId));
+//     console.log("Successfully removed from watchlist.");
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

@@ -11,7 +11,7 @@ const FavoriteMovieCard = ({ movie }) => {
       {movie?.image && (
         <Box
           className="hover:scale-105 transition duration-200 cursor-pointer relative"
-          onClick={() => navigate(`/movie/${Number(movie?.id)}`)}
+          onClick={() => navigate(`/movie/${movie?.id}`)}
         >
           <Image
             src={`https://image.tmdb.org/t/p/original/${movie?.image}`}
