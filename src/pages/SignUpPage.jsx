@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { actionCodeSettings, auth, provider } from "../firebase";
+import bgImage from "../assets/filmpro-login.png";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const SignUpPage = () => {
     <Flex direction="row" className="h-screen ">
       <Box className="lg:basis-[55%] xl:basis-[60%] hidden lg:flex">
         <Image
-          src="https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823__340.jpg"
+          src={bgImage}
           alt="movie-image"
           className="w-full h-full object-cover "
         />
