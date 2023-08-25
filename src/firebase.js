@@ -65,6 +65,7 @@ export const addMovieToFavorites = async (
 
 export const getFavoriteMovies = async (userId) => {
   let favoriteMovies = [];
+  let ids = [];
   const querySnapshot = await getDocs(
     collection(db, "users", userId, "favoriteMovies")
   );
@@ -72,7 +73,24 @@ export const getFavoriteMovies = async (userId) => {
     favoriteMovies.push(doc.data());
   });
 
+  querySnapshot?.forEach((doc) => {
+    ids.push(doc);
+  });
+
+  console.log(ids);
+
   return favoriteMovies;
+};
+
+// Remove from favorites
+
+export const removeFromFavorites = async (userId, movieId) => {
+  try {
+    await deleteDoc(doc(db, "users", userId, "favoriteMovies", movieId));
+    console.log("Successfully removed from favorites.");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Add to watchlist
@@ -114,11 +132,11 @@ export const getWatchlist = async (userId) => {
 
 // Remove from watchlist
 
-// export const removeFromWatchlist = async (userId, movieId) => {
-//   try {
-//     await deleteDoc(doc(db, "users", userId, "watchlist", movieId));
-//     console.log("Successfully removed from watchlist.");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const removeFromWatchlist = async (userId, movieId) => {
+  try {
+    await deleteDoc(doc(db, "users", userId, "watchlist", movieId));
+    console.log("Successfully removed from watchlist.");
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -12,6 +12,7 @@ import {
 
 import FavoriteMovies from "./FavoriteMovies";
 import Loader from "./Loader";
+import WatchlistMovies from "./WatchlistMovies";
 
 const UserChosenMovies = ({ favoriteMovies, watchlist }) => {
   return (
@@ -44,7 +45,7 @@ const UserChosenMovies = ({ favoriteMovies, watchlist }) => {
           </TabPanel>
           <TabPanel>
             {watchlist?.length > 0 ? (
-              <FavoriteMovies movies={watchlist} />
+              <WatchlistMovies movies={watchlist} />
             ) : (
               <>
                 <Text>

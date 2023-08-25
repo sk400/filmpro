@@ -3,14 +3,15 @@ import React from "react";
 import { AiFillStar } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { removeFromFavorites, removeFromWatchlist } from "../firebase";
+import { removeFromWatchlist } from "../firebase";
 import { useSelector } from "react-redux";
 import { user } from "../features/user/userSlice";
 
-const FavoriteMovieCard = ({ movie }) => {
+const WatchlistMovieCard = ({ movie }) => {
   const navigate = useNavigate();
-  const favoriteMovie = movie.data();
+  const watchlistMovie = movie.data();
   const userInfo = useSelector(user);
+
   const toast = useToast();
 
   const showToast = (title) =>
@@ -24,14 +25,14 @@ const FavoriteMovieCard = ({ movie }) => {
 
   return (
     <Box>
-      {favoriteMovie?.image && (
+      {watchlistMovie?.image && (
         <Box
           className="hover:scale-105 transition duration-200 cursor-pointer relative"
-          onClick={() => navigate(`/movie/${favoriteMovie?.id}`)}
+          onClick={() => navigate(`/movie/${watchlistMovie?.id}`)}
         >
           <Image
-            src={favoriteMovie?.image}
-            alt={favoriteMovie?.name}
+            src={watchlistMovie?.image}
+            alt={watchlistMovie?.name}
             borderRadius="lg"
           />
           <Box
@@ -41,7 +42,7 @@ const FavoriteMovieCard = ({ movie }) => {
           >
             <Icon as={AiFillStar} color="#FFBF00 " />
             <Text fontSize="xs" color="white" className="hover:text-[#3DD2CC]">
-              {favoriteMovie?.ratings}
+              {watchlistMovie?.ratings}
             </Text>
           </Box>
           <Box
@@ -54,8 +55,8 @@ const FavoriteMovieCard = ({ movie }) => {
               color="#3dd2cc"
               onClick={(e) => {
                 e.stopPropagation();
-                removeFromFavorites(userInfo?.email, movie?.id);
-                showToast("Successfully removed from favorite movies");
+                removeFromWatchlist(userInfo?.email, movie?.id);
+                showToast("Successfully removed from watchlist");
               }}
             />
           </Box>
@@ -65,4 +66,4 @@ const FavoriteMovieCard = ({ movie }) => {
   );
 };
 
-export default FavoriteMovieCard;
+export default WatchlistMovieCard;
