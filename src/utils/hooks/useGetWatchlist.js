@@ -7,7 +7,9 @@ export const useGetWatchlist = (userId, id) => {
   const getWatchlistMoviesData = async () => {
     const movies = await getWatchlist(userId);
 
-    const movie = movies?.find((movie) => movie?.id === id);
+    // console.log(typeof id);
+
+    const movie = movies?.find((movie) => Number(movie?.id) === Number(id));
 
     if (movie) {
       setIsAlreadyInWatchlist(true);

@@ -7,7 +7,9 @@ export const useGetFavorites = (userId, id) => {
   const getFavoriteMoviesData = async () => {
     const movies = await getFavoriteMovies();
 
-    const movie = movies?.find((movie) => movie?.id === id);
+    const movie = movies?.find((movie) => Number(movie?.id) === Number(id));
+
+    console.log(movie);
 
     if (movie) {
       setIsAlreadyInFavorites(true);

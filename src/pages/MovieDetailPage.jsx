@@ -20,7 +20,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
 
@@ -29,16 +29,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../components";
 import { user } from "../features/user/userSlice";
-import { addMovieToFavorites, addMovieToWatchlist } from "../firebase";
+import { addMovieToFavorites, addMovieToWatchlist, db } from "../firebase";
 import { useGetMovieDetailQuery } from "../services/movieApi";
 import { setCategory } from "../features/category/categorySlice";
 import { useGetFavorites } from "../utils/hooks/useGetFavorites";
 import { extractMovieData } from "../utils/data";
 import { useGetWatchlist } from "../utils/hooks/useGetWatchlist";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
 
 const MovieDetailPage = () => {
   const [videoKey, setVideoKey] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isAlreadyInFavorites, setIsAlreadyInFavorites] = useState(false);
+  const [isAlreadyInWatchlist, setIsAlreadyInWatchlist] = useState(false);
 
   const toast = useToast();
   const userData = useSelector(user);
@@ -51,14 +55,56 @@ const MovieDetailPage = () => {
 
   let userId = userData?.email;
 
-  const [isAlreadyInFavorites, setIsAlreadyInFavorites, getFavoriteMoviesData] =
-    useGetFavorites(userId, id);
+  // Checking if the movie is in favorite movies
 
-  const [
-    isAlreadyInWatchlist,
-    setIsAlreadyInWatchlist,
-    getWatchlistMoviesData,
-  ] = useGetWatchlist(userId, id);
+  const [favoriteMovies] = useCollection(
+    userData?.email &&
+      collection(db, "users", userData?.email, "favoriteMovies")
+  );
+
+  useEffect(() => {
+    const getFavoriteMoviesData = async () => {
+      let movieData = [];
+
+      favoriteMovies?.docs?.map((doc) => {
+        movieData.push(doc.data());
+      });
+
+      const movie = movieData?.find((item) => item?.id?.toString() === id);
+
+      if (movie) {
+        setIsAlreadyInFavorites(true);
+      } else {
+        setIsAlreadyInFavorites(false);
+      }
+    };
+    getFavoriteMoviesData();
+  }, [favoriteMovies?.docs]);
+
+  // Checking if the movie is in watchlist
+
+  const [watchlist] = useCollection(
+    userData?.email && collection(db, "users", userData?.email, "watchlist")
+  );
+
+  useEffect(() => {
+    const getWatchlistData = async () => {
+      let movieData = [];
+
+      watchlist?.docs?.map((doc) => {
+        movieData.push(doc.data());
+      });
+
+      const movie = movieData?.find((item) => item?.id?.toString() === id);
+
+      if (movie) {
+        setIsAlreadyInWatchlist(true);
+      } else {
+        setIsAlreadyInWatchlist(false);
+      }
+    };
+    getWatchlistData();
+  }, [watchlist?.docs]);
 
   const showToast = (title) =>
     toast({
@@ -260,8 +306,6 @@ const MovieDetailPage = () => {
             }}
             onClick={() => {
               addToFavorites();
-              setIsAlreadyInFavorites(true);
-              getFavoriteMoviesData();
             }}
           >
             Add to favorites
@@ -284,8 +328,6 @@ const MovieDetailPage = () => {
             }}
             onClick={() => {
               addToWatchlist();
-              setIsAlreadyInWatchlist(true);
-              getWatchlistMoviesData();
             }}
           >
             Add to watchlist

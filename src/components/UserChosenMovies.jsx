@@ -37,8 +37,8 @@ const UserChosenMovies = ({ favoriteMovies, watchlist }) => {
               <FavoriteMovies movies={favoriteMovies} />
             ) : (
               <>
-                <Text>
-                  You have not any favorite news yet. You can add in home page.{" "}
+                <Text color="whiteAlpha.900" mt={10}>
+                  You have not any favorite news yet.
                 </Text>
               </>
             )}
@@ -48,8 +48,8 @@ const UserChosenMovies = ({ favoriteMovies, watchlist }) => {
               <WatchlistMovies movies={watchlist} />
             ) : (
               <>
-                <Text>
-                  You have not any favorite news yet. You can add in home page.{" "}
+                <Text color="whiteAlpha.900" mt={10}>
+                  You have not any favorite news yet.
                 </Text>
               </>
             )}
