@@ -34,7 +34,7 @@ export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 
 export const actionCodeSettings = {
-  url: "http://localhost:3000",
+  url: "https://filmpro.vercel.app/",
   handleCodeInApp: true,
 };
 
