@@ -1,46 +1,42 @@
-# Getting Started with Create React App and Redux
+# Filmpro
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+![Project Image](https://cdn.sanity.io/images/yuydehr2/production/b8255c4a9479ea4d7e5da31d716c129418fa18ad-1439x780.png)
 
-## Available Scripts
+Welcome to our Movie and Cast Information Sharing Web App! This web application is designed to provide users with an immersive experience exploring movie details and cast information. Built with React.js, Chakra UI, Redux Toolkit Query, and Firebase, this app offers a seamless and interactive platform for movie enthusiasts.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Explore detailed information about movies and casts
+- Add movies to your watchlist and favorites
+- Secure user authentication with Firebase
+- Store user data and preferences using Firebase Firestore
+- Enjoy a visually appealing and responsive design powered by Chakra UI
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Clone this repository
+2. Install dependencies using `npm install`
+3. Set up Firebase authentication and Firestore
+4. Run the app using `npm start`
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React.js
+- Chakra UI
+- Redux Toolkit Query
+- Firebase Authentication
+- Firebase Firestore
 
-### `npm run build`
+## Contributing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We welcome contributions! Feel free to submit pull requests or open issues for any suggestions or improvements.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Feel free to reach out and connect with me on:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saumyakanta-panda-reactjs-nextjs-developer)
 
-### `npm run eject`
+[![Email](https://img.shields.io/badge/-Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:skdeveloper101@gmail.com)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## For React.js or Next.js services
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+[![Fiverr](https://img.shields.io/badge/-Fiverr-1DBF73?style=for-the-badge&logo=fiverr&logoColor=white)](https://www.fiverr.com/s/vVwg0W)
