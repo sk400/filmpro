@@ -31,6 +31,8 @@ Welcome to our Movie and Cast Information Sharing Web App! This web application 
 
 We welcome contributions! Feel free to submit pull requests or open issues for any suggestions or improvements.
 
+## Connect With Me
+
 Feel free to reach out and connect with me on:
 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saumyakanta-panda-reactjs-nextjs-developer)
