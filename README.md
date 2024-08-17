@@ -17,6 +17,7 @@ Welcome to our Movie and Cast Information Sharing Web App! This web application 
 - React.js
 - Chakra UI
 - Redux Toolkit Query
+- React router dom
 - Firebase Authentication
 - Firebase Firestore
 - TMDB api
