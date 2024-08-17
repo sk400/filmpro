@@ -12,13 +12,6 @@ Welcome to our Movie and Cast Information Sharing Web App! This web application 
 - Store user data and preferences using Firebase Firestore
 - Enjoy a visually appealing and responsive design powered by Chakra UI
 
-## Getting Started
-
-1. Clone this repository
-2. Install dependencies using `npm install`
-3. Set up Firebase authentication and Firestore
-4. Run the app using `npm start`
-
 ## Technologies Used
 
 - React.js
@@ -26,6 +19,16 @@ Welcome to our Movie and Cast Information Sharing Web App! This web application 
 - Redux Toolkit Query
 - Firebase Authentication
 - Firebase Firestore
+- TMDB api
+
+## Getting Started
+
+1. Clone this repository
+2. Install dependencies using `npm install`
+3. Create a project on Firebase
+4. Create an account on TMDB and get your API key
+5. Add the project credentials to web app using environment variables
+6. Run the app using `npm start`
 
 ## Contributing
 
